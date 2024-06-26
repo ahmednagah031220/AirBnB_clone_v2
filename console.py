@@ -98,7 +98,8 @@ class HBNBCommand(cmd.Cmd):
             if _cmd not in HBNBCommand.dot_cmds:
                 raise Exception
 
-            parse_line = parse_line[parse_line.find("(") + 1: parse_line.find(")")]
+            sol = parse_line[parse_line.find("(") + 1: parse_line.find(")")]
+            parse_line = sol
             if parse_line:
                 parse_line = parse_line.partition(", ")
 
@@ -120,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
             pass
         finally:
             return arguments
-        
+
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
@@ -363,7 +364,8 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                     return
                 if attribute_name in HBNBCommand.types:
-                    attribute_value = HBNBCommand.types[attribute_name](attribute_value)
+                    solver = HBNBCommand.types[attribute_name](attribute_value)
+                    attribute_value = solver
 
                 new_dict.__dict__.update({attribute_name: attribute_value})
 
@@ -373,6 +375,7 @@ class HBNBCommand(cmd.Cmd):
         """Help information for the update class"""
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-        
+
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

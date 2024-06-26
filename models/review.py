@@ -6,6 +6,7 @@ Review Module - contains the Review class
 from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel, Base
 
+
 class Review(BaseModel, Base):
     """
     Review class inherits from BaseModel and Base.

@@ -36,38 +36,42 @@ class DBStorage:
                                       format(HBNB_MYSQL_USER,
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB), pool_pre_ping=True)
+                                             HBNB_MYSQL_DB),
+                                      pool_pre_ping=True)
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
-    
+
     def all(self, cls=None):
         """returning all the related objects of a specific class"""
         all_objs = {}
 
         if cls:
             for obj in self.__session.query(cls).all():
-                all_objs.update({"{}.{}".format(type(obj).__name__, obj.id): obj})
+                all_objs.update({"{}.{}".format(type(obj).__name__,
+                                                obj.id): obj})
         else:
             for obj in classes.values():
                 for value in self.__session.query(obj).all():
-                    all_objs.update({"{}.{}".format(type(value).__name__, value.id): value})
+                    all_objs.update({"{}.{}".format(type(value).__name__,
+                                                    value.id): value})
 
         return all_objs
+
     def new(self, obj):
         """Adding new objects to the databases as rows"""
         self.__session.add(obj)
-    
+
     def save(self):
         """Commiting the whole process to the database"""
         self.__session.commit()
-    
+
     def delete(self, obj=None):
         """Deleting a specific object"""
         if obj:
-            self.__session.query(type(obj).__name__).filter(id = obj.id).delete()
+            self.__session.query(type(obj).__name__).filter(id=obj.id).delete()
 
     def reload(self):
-        """Reloading the whole objects and call the metadate 
+        """Reloading the whole objects and call the metadate
         to convert all the process to SQL code
         """
         Base.metadata.create_all(self.__engine)
